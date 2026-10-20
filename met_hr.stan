@@ -12,7 +12,7 @@ data {
 }
 
 parameters {
-  real<lower=0> nu; // degrees of freedom for Student-t distribution
+  real<lower=0> nu; // degrees of freedom 
   vector[2] b_group; //coefficients for group
   vector[2] b_sex; // coefficients for sex
   vector[7] b_time_point; // coefficients for time points
@@ -20,7 +20,6 @@ parameters {
   real mu_gr_sex_tp_st;
   real<lower=0> sig_gr_sex_tp_st; // adaptive scale for interactions
   vector[70] b_gr_sex_tp_st_raw; //coefficients for group, sex, tp interaction
-  //vector[70] b_gr_sex_tp_st; //coefficients for group, sex, tp interaction
   vector[N_ids] b_id_raw; // raw participant random effects
   real mu_id; // mean of random effects for participants
   real<lower=0> sig_id; // standard deviation of participant random effects
@@ -37,28 +36,24 @@ transformed parameters {
 
 model {
   // Priors
-  b_group ~ normal(0,0.3); //group effect
-  b_sex[1] ~ normal(-0.1,0.3); //
-  b_sex[2] ~ normal(0.1,0.3); //
-  b_time_point ~ normal(0,0.3); // weak prior for time point effect
-  b_stage[1] ~ normal(-1.2,0.1); //rest prior
-  b_stage[2] ~ normal(0.1,0.2); //MET stage 1 prior
-  b_stage[3] ~ normal(0.1,0.2); //MET stage 2 prior
-  b_stage[4] ~ normal(0.1,0.2); //MET stage 3 prior
-  b_stage[5] ~ normal(1.4,0.2); //MET stage 4 prior
+  b_group ~ normal(0,0.3); 
+  b_sex[1] ~ normal(-0.1,0.3); 
+  b_sex[2] ~ normal(0.1,0.3); 
+  b_time_point ~ normal(0,0.3); 
+  b_stage[1] ~ normal(-1.2,0.1); 
+  b_stage[2] ~ normal(0.1,0.2); 
+  b_stage[3] ~ normal(0.1,0.2); 
+  b_stage[4] ~ normal(0.1,0.2); 
+  b_stage[5] ~ normal(1.4,0.2); 
   
   sig_gr_sex_tp_st ~ exponential(1);
   mu_gr_sex_tp_st ~ normal(0,0.2);
-  b_gr_sex_tp_st_raw ~ normal(0,1); // Standard normal
-  //b_gr_sex_tp_st ~ normal(mu_gr_sex_tp_st,sig_gr_sex_tp_st); // Standard normal
-  
-  //Original
-  //b_gr_sex_tp_st ~ normal(0, 0.2); // weak prior for time x sex interaction
-  b_id_raw ~ normal(0, 1); // participant random effects
-  mu_id ~ normal(0, 0.5); // prior for random effect mean
-  sig_id ~ exponential(1); // prior for random effect standard deviation
-  sigma ~ exponential(1); // prior for residual standard deviation
-  nu ~ gamma(2, 0.1); // prior for Student-t degrees of freedom
+  b_gr_sex_tp_st_raw ~ normal(0,1);
+  b_id_raw ~ normal(0, 1); 
+  mu_id ~ normal(0, 0.5); 
+  sig_id ~ exponential(1); 
+  sigma ~ exponential(1); 
+  nu ~ gamma(2, 0.1); 
   
   // Likelihood
   for (i in 1:N) {
